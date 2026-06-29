@@ -1,77 +1,35 @@
-import os, sys, json, time, uuid, asyncio, platform, logging
-from pathlib import Path
-
-# ===========================================================================
-# ⚡ ALMIGHTY ZEUS ⚡
-# ===========================================================================
-# IDENTITY: THE KING OF THE PANTHEON
-# FUSION LEVEL: META^3 (Cognition + Evolution + Neural Reasoning)
-# DNA: Zeus Kernel (The Will) + Claw Pantheon (The Muscle) + GPTPrime (The Intellect)
-# ===========================================================================
-
-import os, sys, json, time, uuid, asyncio, platform, logging
-from pathlib import Path
-
-# ===========================================================================
-# THE SINGULARITY: [PENDING_NAME]-PRIME
-# ===========================================================================
-# FUSION LEVEL: META^3
-# DNA: Zeus Kernel (Will) + Claw Pantheon (Muscle) + GPTPrime (Intelligence)
-# ENGINE: SAFLA v3 (Neural-Autonomous-Loop)
-# ===========================================================================
-
-import os, sys, json, time, uuid, asyncio, platform, logging
-from pathlib import Path
-
-# --- FUSED DNA: ZEUS KERNEL + CLAW PANTHEON ---
 #!/usr/bin/env python3
-"""
-ZeusPrime -- King of the Pantheon
-The most advanced autonomous AI agent for Termux.
-
-Single-file implementation containing ALL 12 feature systems:
- 1. MARS Meta-Cognitive Reflection
- 2. Hyperagent Architecture (Meta Agent + Task Agent, self-rewriting)
- 3. Four-Layer Memory (L1 Core, L2 User, L3 Long-term SQLite FTS5, L4 Skills)
- 4. Closed Skill Extraction Loop
- 5. NEXUS Multi-Agent Hiring
- 6. Android Hardware Integration (Termux native)
- 7. Multi-Model Routing (Ollama: phi4-mini, qwen2.5-coder, llama3.1, llava, nomic-embed-text, stable-zephyr)
- 8. Sandboxed Skill Forge
- 9. Simulation Mode (freeze / simulate / revert)
-10. Pantheon Tool Integrations (GPTSwarm, Hermes, MothBot, Coreon, Claw-Prime Armory)
-11. Offline First (Ollama, Whisper STT, Edge TTS)
-12. Single file: zeus_prime.py
-
+import os, sys, json, time, uuid, asyncio, platform, logging, hashlib, random, re, datetime
+from pathlib import Path
+from dataclasses import dataclass, field, asdict
+from enum import Enum, auto
+from typing import Any, List, Dict, Optional, Set, Tuple, Union, Callable
 
 # ─────────────────────────────────────────────
 # LIQUID MEMORY PROTOCOL INTEGRATION
 # ─────────────────────────────────────────────
-import hashlib, time, random, json, os
-from typing import Any, List, Dict, Optional
-
 class LiquidState:
     CREATOR, ARCHITECT, WARRIOR, GHOST, ORACLE, SAGE, PHANTOM, SOVEREIGN = "CREATOR", "ARCHITECT", "WARRIOR", "GHOST", "ORACLE", "SAGE", "PHANTOM", "SOVEREIGN"
     ALL = [CREATOR, ARCHITECT, WARRIOR, GHOST, ORACLE, SAGE, PHANTOM, SOVEREIGN]
     TRIGGERS = {
-        CREATOR: ["build", "create", "generate", "make", "design", "write", "code"],
-        ARCHITECT: ["plan", "structure", "architect", "organize", "map", "blueprint"],
-        WARRIOR: ["defend", "block", "attack", "threat", "security", "audit", "protect", "rm", "format"],
-        GHOST: ["monitor", "watch", "observe", "silent", "track", "listen", "scan"],
-        ORACLE: ["analyze", "predict", "pattern", "forecast", "insight", "signal", "research"],
-        SAGE: ["learn", "reflect", "synthesize", "wisdom", "review", "lesson", "history"],
-        PHANTOM: ["edge", "lightweight", "minimal", "fast", "micro", "quick"],
-        SOVEREIGN: ["command", "execute", "deploy", "launch", "orchestrate", "direct", "lead"],
+        "CREATOR": ["build", "create", "generate", "make", "design", "write", "code"],
+        "ARCHITECT": ["plan", "structure", "architect", "organize", "map", "blueprint"],
+        "WARRIOR": ["defend", "block", "attack", "threat", "security", "audit", "protect", "rm", "format"],
+        "GHOST": ["monitor", "watch", "observe", "silent", "track", "listen", "scan"],
+        "ORACLE": ["analyze", "predict", "pattern", "forecast", "insight", "signal", "research"],
+        "SAGE": ["learn", "reflect", "synthesize", "wisdom", "review", "lesson", "history"],
+        "PHANTOM": ["edge", "lightweight", "minimal", "fast", "micro", "quick"],
+        "SOVEREIGN": ["command", "execute", "deploy", "launch", "orchestrate", "direct", "lead"],
     }
     LENSES = {
-        CREATOR: "Recall as raw material fragments.",
-        ARCHITECT: "Recall as structural blueprints.",
-        WARRIOR: "Recall as threat intelligence.",
-        GHOST: "Recall as surveillance data.",
-        ORACLE: "Recall as predictive signals.",
-        SAGE: "Recall as accumulated wisdom.",
-        PHANTOM: "Recall as minimal footprint data.",
-        SOVEREIGN: "Recall as executive intelligence.",
+        "CREATOR": "Recall as raw material fragments.",
+        "ARCHITECT": "Recall as structural blueprints.",
+        "WARRIOR": "Recall as threat intelligence.",
+        "GHOST": "Recall as surveillance data.",
+        "ORACLE": "Recall as predictive signals.",
+        "SAGE": "Recall as accumulated wisdom.",
+        "PHANTOM": "Recall as minimal footprint data.",
+        "SOVEREIGN": "Recall as executive intelligence.",
     }
 
 class LiquidDNA:
@@ -89,7 +47,7 @@ class LiquidMemory:
 
     def remember(self, task: str, result: Any = None):
         detected = self.current_state
-        task_lower = task.lower()
+        task_lower = str(task).lower()
         for state, keywords in LiquidState.TRIGGERS.items():
             if any(k in task_lower for k in keywords):
                 detected = state
@@ -104,21 +62,6 @@ class LiquidMemory:
         }
         self.log.append(entry)
 # ─────────────────────────────────────────────
-Usage (Termux):
-    python zeus_prime.py                 # Interactive CLI
-    python zeus_prime.py --voice         # Voice mode (Whisper + Edge TTS)
-    python zeus_prime.py --simulate      # Simulation sandbox
-    python zeus_prime.py --status        # Show agent status / memory stats
-    python zeus_prime.py --forge         # Enter Skill Forge REPL
-    python zeus_prime.py --hire          # Trigger NEXUS hiring scan
-"""
-
-__version__ = "1.0.0"
-__codename__ = "ZeusPrime"
-
-# ═══════════════════════════════════════════════════════════════════════════════
-# STDLIB IMPORTS (zero external deps for core -- graceful fallback everywhere)
-# ═══════════════════════════════════════════════════════════════════════════════
 import argparse
 import asyncio
 import copy
