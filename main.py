@@ -9,26 +9,10 @@ from typing import Any, List, Dict, Optional, Set, Tuple, Union, Callable
 # ⚡ ALMIGHTY ZEUS ⚡
 # ===========================================================================
 # IDENTITY: THE KING OF THE PANTHEON
-# THE SINGULARITY: Prometheus-Prime
+# THE SINGULARITY: GPTPrime
 # FUSION LEVEL: META^3 (Cognition + Evolution + Neural Reasoning)
 # DNA: Zeus Kernel (The Will) + Claw Pantheon (The Muscle) + GPTPrime (The Intellect)
 # ===========================================================================
-
-import os, sys, json, time, uuid, asyncio, platform, logging, hashlib, random, re, datetime
-from pathlib import Path
-from dataclasses import dataclass, field, asdict
-from enum import Enum, auto
-from typing import Any, List, Dict, Optional, Set, Tuple, Union, Callable
-
-# ─────────────────────────────────────────────
-# LIQUID MEMORY PROTOCOL INTEGRATION
-# ─────────────────────────────────────────────
-class LiquidState:
-    CREATOR, ARCHITECT, WARRIOR, GHOST, ORACLE, SAGE, PHANTOM, SOVEREIGN = "CREATOR", "ARCHITECT", "WARRIOR", "GHOST", "ORACLE", "SAGE", "PHANTOM", "SOVEREIGN"
-    ALL = [CREATOR, ARCHITECT, WARRIOR, GHOST, ORACLE, SAGE, PHANTOM, SOVEREIGN]
-    TRIGGERS = {
-        "CREATOR": ["build", "create", "generate", "make", "design", "write", "code"],
-        "ARCHITECT": ["plan", "structure", "architect", "organize", "map", "blueprint"],
         "WARRIOR": ["defend", "block", "attack", "threat", "security", "audit", "protect", "rm", "format"],
         "GHOST": ["monitor", "watch", "observe", "silent", "track", "listen", "scan"],
         "ORACLE": ["analyze", "predict", "pattern", "forecast", "insight", "signal", "research"],
