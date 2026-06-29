@@ -43,6 +43,67 @@ Single-file implementation containing ALL 12 feature systems:
 11. Offline First (Ollama, Whisper STT, Edge TTS)
 12. Single file: zeus_prime.py
 
+
+# ─────────────────────────────────────────────
+# LIQUID MEMORY PROTOCOL INTEGRATION
+# ─────────────────────────────────────────────
+import hashlib, time, random, json, os
+from typing import Any, List, Dict, Optional
+
+class LiquidState:
+    CREATOR, ARCHITECT, WARRIOR, GHOST, ORACLE, SAGE, PHANTOM, SOVEREIGN = "CREATOR", "ARCHITECT", "WARRIOR", "GHOST", "ORACLE", "SAGE", "PHANTOM", "SOVEREIGN"
+    ALL = [CREATOR, ARCHITECT, WARRIOR, GHOST, ORACLE, SAGE, PHANTOM, SOVEREIGN]
+    TRIGGERS = {
+        CREATOR: ["build", "create", "generate", "make", "design", "write", "code"],
+        ARCHITECT: ["plan", "structure", "architect", "organize", "map", "blueprint"],
+        WARRIOR: ["defend", "block", "attack", "threat", "security", "audit", "protect", "rm", "format"],
+        GHOST: ["monitor", "watch", "observe", "silent", "track", "listen", "scan"],
+        ORACLE: ["analyze", "predict", "pattern", "forecast", "insight", "signal", "research"],
+        SAGE: ["learn", "reflect", "synthesize", "wisdom", "review", "lesson", "history"],
+        PHANTOM: ["edge", "lightweight", "minimal", "fast", "micro", "quick"],
+        SOVEREIGN: ["command", "execute", "deploy", "launch", "orchestrate", "direct", "lead"],
+    }
+    LENSES = {
+        CREATOR: "Recall as raw material fragments.",
+        ARCHITECT: "Recall as structural blueprints.",
+        WARRIOR: "Recall as threat intelligence.",
+        GHOST: "Recall as surveillance data.",
+        ORACLE: "Recall as predictive signals.",
+        SAGE: "Recall as accumulated wisdom.",
+        PHANTOM: "Recall as minimal footprint data.",
+        SOVEREIGN: "Recall as executive intelligence.",
+    }
+
+class LiquidDNA:
+    @staticmethod
+    def generate(agent, state, ts, prev=""):
+        raw = f"{agent}:{state}:{ts}:{prev}:{random.getrandbits(64)}"
+        return hashlib.sha256(raw.encode()).hexdigest()[:24]
+
+class LiquidMemory:
+    def __init__(self, agent_name: str, initial_state: str = "SOVEREIGN"):
+        self.agent_name = agent_name
+        self.current_state = initial_state
+        self.dna = LiquidDNA.generate(agent_name, initial_state, time.time())
+        self.log = []
+
+    def remember(self, task: str, result: Any = None):
+        detected = self.current_state
+        task_lower = task.lower()
+        for state, keywords in LiquidState.TRIGGERS.items():
+            if any(k in task_lower for k in keywords):
+                detected = state
+                break
+        if detected != self.current_state:
+            prev_dna = self.dna
+            self.current_state = detected
+            self.dna = LiquidDNA.generate(self.agent_name, detected, time.time(), prev_dna)
+        entry = {
+            "task": task, "result": str(result)[:500], "state": self.current_state,
+            "dna": self.dna, "timestamp": time.time(), "lens": LiquidState.LENSES[self.current_state]
+        }
+        self.log.append(entry)
+# ─────────────────────────────────────────────
 Usage (Termux):
     python zeus_prime.py                 # Interactive CLI
     python zeus_prime.py --voice         # Voice mode (Whisper + Edge TTS)
@@ -2158,6 +2219,7 @@ class ZeusPrime:
 
         # Feature 3: Four-layer memory
         self.memory = FourLayerMemory(self.cfg)
+        self.liquid_memory = LiquidMemory("Almighty-Zeus")
 
         # Feature 1: MARS reflection
         self.mars = MARSEngine(self.llm, self.memory)
@@ -2854,6 +2916,7 @@ class ClawPrime:
         self.bus = LegionBus()
         self.armory = ArmoryLoader()
         self.memory = self.load_memory()
+        self.liquid_memory = LiquidMemory("Almighty-Claw")
         self.legion = {
             "": Agent("", "Core"),
             "ARC": ARCAgent("ARC", "Research"),
@@ -2911,6 +2974,7 @@ class ClawPrime:
             results.append(res)
         self.memory.append({"task": task, "results": results, "timestamp": time.time()})
         self.save_memory()
+        self.liquid_memory.remember(task, results)
         print(f"[{self.name}] LEARN: Cycle complete. Memory updated.")
         return results
 
