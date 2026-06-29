@@ -39,7 +39,7 @@ Single-file implementation containing ALL 12 feature systems:
  7. Multi-Model Routing (Ollama: phi4-mini, qwen2.5-coder, llama3.1, llava, nomic-embed-text, stable-zephyr)
  8. Sandboxed Skill Forge
  9. Simulation Mode (freeze / simulate / revert)
-10. Pantheon Tool Integrations (GPTSwarm, Hermes, MothBot, Coreon, OpenClaw)
+10. Pantheon Tool Integrations (GPTSwarm, Hermes, MothBot, Coreon, Claw-Prime Armory)
 11. Offline First (Ollama, Whisper STT, Edge TTS)
 12. Single file: zeus_prime.py
 
@@ -1040,7 +1040,7 @@ class SkillExtractor:
             "- Steps (numbered)\n"
             "- Expected outcome\n"
             "- Notes/caveats\n\n"
-            "Keep it portable (works with OpenClaw, Claude Code, etc)."
+            "Keep it portable (works with Claude Code, etc)."
         )
         skill_md = await self.llm.generate(prompt, model=self.llm.cfg.model_code)
 
@@ -2001,7 +2001,7 @@ def tool_skill_list(args: Dict) -> str:
 
 
 PANTHEON_TOOLS: Dict[str, Callable] = {
-    # OpenClaw tools
+    #  tools
     "bash": tool_bash,
     "file_read": tool_file_read,
     "file_write": tool_file_write,
@@ -2840,7 +2840,7 @@ class TinyAGIAgent(ClawAgent):
         bus.publish(self.name, res)
         return res
 
-class OpenClawAgent(ClawAgent):
+class Agent(ClawAgent):
     def run(self, task, bus, armory, **kwargs):
         print(f"[{self.name}] ACT: Executing general logic...")
         res = f"OPEN_CLAW: Task '{task}' processed."
@@ -2855,7 +2855,7 @@ class ClawPrime:
         self.armory = ArmoryLoader()
         self.memory = self.load_memory()
         self.legion = {
-            "OpenClaw": OpenClawAgent("OpenClaw", "Core"),
+            "": Agent("", "Core"),
             "ARC": ARCAgent("ARC", "Research"),
             "AutoClaw": AutoClawAgent("AutoClaw", "Automation"),
             "OpenCrabs": OpenCrabsAgent("OpenCrabs", "Rust"),
@@ -2893,7 +2893,7 @@ class ClawPrime:
         elif "edge" in task.lower():
             pipeline.append(("PicoClaw", task))
         else:
-            pipeline.append(("OpenClaw", task))
+            pipeline.append(("", task))
         return pipeline
 
     def safla_cycle(self, task):
